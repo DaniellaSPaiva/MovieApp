@@ -31,10 +31,15 @@ class MovieViewModel(
     private val _movieDetails = MutableStateFlow<Movie?>(null)
     val movieDetails: StateFlow<Movie?> = _movieDetails
 
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
     fun fetchMovieDetails(movieId: Int) {
         viewModelScope.launch {
+            _isLoading.value = true
             val movie = getMovieDetailsUseCase(movieId)
             _movieDetails.value = movie
+            _isLoading.value = false
         }
     }
 }
