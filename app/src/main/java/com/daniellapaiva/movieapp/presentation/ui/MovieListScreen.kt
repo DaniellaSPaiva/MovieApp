@@ -23,7 +23,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import coil.compose.rememberAsyncImagePainter
-import com.daniellapaiva.movieapp.domain.Movie
+import com.daniellapaiva.movieapp.domain.model.Movie
 import com.daniellapaiva.movieapp.presentation.MovieViewModel
 import org.koin.androidx.compose.koinViewModel
 
