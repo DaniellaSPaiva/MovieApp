@@ -2,8 +2,8 @@ package com.daniellapaiva.movieapp.presentation.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,23 +23,29 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import coil.compose.rememberAsyncImagePainter
-import com.daniellapaiva.movieapp.domain.Movie
-import com.daniellapaiva.movieapp.presentation.MovieViewModel
+import com.daniellapaiva.movieapp.domain.model.Movie
+import com.daniellapaiva.movieapp.presentation.viewmodel.MovieListViewModel
+import com.daniellapaiva.movieapp.designsystem.components.LoadingIndicator
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieListScreen(
-    viewModel: MovieViewModel = koinViewModel(),
+    viewModel: MovieListViewModel = koinViewModel(),
     onMovieClick: (Int) -> Unit
 ) {
+
+    val isLoading by viewModel.isLoading.collectAsState()
     val movies by viewModel.popularMovies.collectAsState(initial = emptyList())
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        items(movies) { movie ->
-            MovieItem(movie = movie, onClick = { onMovieClick(movie.id) })
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn {
+            items(movies) { movie ->
+                MovieItem(movie = movie, onClick = { onMovieClick(movie.id) })
+            }
+        }
+
+        if (isLoading) {
+            LoadingIndicator()
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.daniellapaiva.movieapp.ui.theme
+package com.daniellapaiva.movieapp.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

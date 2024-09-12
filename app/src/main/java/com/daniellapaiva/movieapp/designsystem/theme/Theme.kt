@@ -1,6 +1,5 @@
-package com.daniellapaiva.movieapp.ui.theme
+package com.daniellapaiva.movieapp.designsystem.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

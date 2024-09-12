@@ -1,31 +1,52 @@
 package com.daniellapaiva.movieapp.presentation.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.daniellapaiva.movieapp.domain.Movie
+import com.daniellapaiva.movieapp.domain.model.Movie
+import com.daniellapaiva.movieapp.presentation.viewmodel.MovieDetailViewModel
+import com.daniellapaiva.movieapp.designsystem.components.LoadingIndicator
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MovieDetailsScreen(movieId: Int?) {
-    val movie = Movie(
-        id = movieId ?: 0,
-        title = "The Movie Title",
-        overview = "This is a detailed overview of the movie with more information.",
-        posterPath = "/path_to_image.jpg"
-    )
+fun MovieDetailsScreen(
+    movieId: Int?,
+    viewModel: MovieDetailViewModel = koinViewModel()
+) {
+    movieId?.let {
+        LaunchedEffect(movieId) {
+            viewModel.fetchMovieDetails(movieId)
+        }
+    }
 
-    MovieDetailsContent(movie = movie)
+    val isLoading by viewModel.isLoading.collectAsState()
+    val movieDetails by viewModel.movieDetails.collectAsState()
+
+    Box(modifier = Modifier.fillMaxSize()) {
+        movieDetails?.let { movie ->
+            MovieDetailsContent(movie = movie)
+        }
+
+        if (isLoading) {
+            LoadingIndicator()
+        }
+    }
 }
 
 @Composable

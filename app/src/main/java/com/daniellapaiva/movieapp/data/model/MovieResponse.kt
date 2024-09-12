@@ -1,10 +1,10 @@
 package com.daniellapaiva.movieapp.data.model
 
-data class MovieResponse(
-    val results: List<Movie>
+data class MovieListResponse(
+    val results: List<MovieDetailResponse>
 )
 
-data class Movie(
+data class MovieDetailResponse(
     val id: Int,
     val title: String,
     val overview: String,
