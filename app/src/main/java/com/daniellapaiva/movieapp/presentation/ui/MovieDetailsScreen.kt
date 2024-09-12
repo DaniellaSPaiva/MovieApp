@@ -1,8 +1,10 @@
 package com.daniellapaiva.movieapp.presentation.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -36,11 +38,13 @@ fun MovieDetailsScreen(
     val isLoading by viewModel.isLoading.collectAsState()
     val movieDetails by viewModel.movieDetails.collectAsState()
 
-    if (isLoading) {
-        LoadingIndicator()
-    } else {
+    Box(modifier = Modifier.fillMaxSize()) {
         movieDetails?.let { movie ->
             MovieDetailsContent(movie = movie)
+        }
+
+        if (isLoading) {
+            LoadingIndicator()
         }
     }
 }

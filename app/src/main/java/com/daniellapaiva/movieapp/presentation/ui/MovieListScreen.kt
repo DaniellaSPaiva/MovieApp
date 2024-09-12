@@ -2,8 +2,8 @@ package com.daniellapaiva.movieapp.presentation.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,16 +37,15 @@ fun MovieListScreen(
     val isLoading by viewModel.isLoading.collectAsState()
     val movies by viewModel.popularMovies.collectAsState(initial = emptyList())
 
-    if (isLoading) {
-        LoadingIndicator()
-    } else {
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(16.dp)
-        ) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn {
             items(movies) { movie ->
                 MovieItem(movie = movie, onClick = { onMovieClick(movie.id) })
             }
+        }
+
+        if (isLoading) {
+            LoadingIndicator()
         }
     }
 }
