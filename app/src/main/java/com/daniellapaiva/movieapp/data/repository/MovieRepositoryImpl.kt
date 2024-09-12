@@ -1,7 +1,7 @@
 package com.daniellapaiva.movieapp.data.repository
 
 import com.daniellapaiva.movieapp.data.MovieApiService
-import com.daniellapaiva.movieapp.domain.Movie
+import com.daniellapaiva.movieapp.domain.model.Movie
 import com.daniellapaiva.movieapp.domain.MovieRepository
 
 
@@ -20,5 +20,15 @@ class MovieRepositoryImpl(
                 posterPath = movie.poster_path
             )
         }
+    }
+
+    override suspend fun getMovieDetails(movieId: Int): Movie {
+        val movieDetails = apiService.getMovieDetails(movieId, apiKey = apiKey)
+        return Movie(
+            id = movieDetails.id,
+            title = movieDetails.title,
+            overview = movieDetails.overview,
+            posterPath = movieDetails.poster_path
+        )
     }
 }
