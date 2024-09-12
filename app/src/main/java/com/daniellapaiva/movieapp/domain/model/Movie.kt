@@ -1,4 +1,4 @@
-package com.daniellapaiva.movieapp.domain
+package com.daniellapaiva.movieapp.domain.model
 
 data class Movie(
     val id: Int,
