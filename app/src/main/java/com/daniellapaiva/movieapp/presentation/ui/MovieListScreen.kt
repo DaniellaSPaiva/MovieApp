@@ -24,12 +24,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import coil.compose.rememberAsyncImagePainter
 import com.daniellapaiva.movieapp.domain.model.Movie
-import com.daniellapaiva.movieapp.presentation.MovieViewModel
+import com.daniellapaiva.movieapp.presentation.viewmodel.MovieListViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieListScreen(
-    viewModel: MovieViewModel = koinViewModel(),
+    viewModel: MovieListViewModel = koinViewModel(),
     onMovieClick: (Int) -> Unit
 ) {
     val movies by viewModel.popularMovies.collectAsState(initial = emptyList())
