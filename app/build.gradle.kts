@@ -64,6 +64,9 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.coil.compose)
 
+    // Accompanist System UI Controller
+    implementation(libs.accompanist.systemuicontroller)
+
     // Retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
