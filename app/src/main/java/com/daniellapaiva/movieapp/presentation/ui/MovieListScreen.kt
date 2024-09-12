@@ -1,6 +1,7 @@
 package com.daniellapaiva.movieapp.presentation.ui
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +29,8 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieListScreen(
-    viewModel: MovieViewModel = koinViewModel()
+    viewModel: MovieViewModel = koinViewModel(),
+    onMovieClick: (Int) -> Unit
 ) {
     val movies by viewModel.popularMovies.collectAsState(initial = emptyList())
 
@@ -37,17 +39,18 @@ fun MovieListScreen(
         contentPadding = PaddingValues(16.dp)
     ) {
         items(movies) { movie ->
-            MovieItem(movie = movie)
+            MovieItem(movie = movie, onClick = { onMovieClick(movie.id) })
         }
     }
 }
 
 @Composable
-fun MovieItem(movie: Movie) {
+fun MovieItem(movie: Movie, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .clickable(onClick = onClick),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -77,5 +80,5 @@ fun MovieItemPreview() {
             overview = "This is a sample overview of the movie.",
             posterPath = "/path_to_image.jpg"
         )
-    )
+    ) {}
 }
