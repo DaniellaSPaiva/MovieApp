@@ -2,6 +2,12 @@
 
 MovieApp é um aplicativo Android desenvolvido em **Kotlin** que consome a API do The Movie Database (**TMDb**) para exibir uma lista de filmes populares. Ele foi construído usando **Clean Architecture**, princípios **SOLID** e tecnologias modernas como **Jetpack Compose** para a interface de usuário.
 
+## Demonstração do MovieApp
+
+Veja uma demonstração rápida do MovieApp em ação:
+
+![MovieApp Demo](https://github.com/user-attachments/assets/680e4481-0f32-48cb-a7d0-2fa09fbfd512)
+
 ## Índice
 
 1. [Funcionalidades](#funcionalidades)
