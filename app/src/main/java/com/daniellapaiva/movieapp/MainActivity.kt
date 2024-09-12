@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.daniellapaiva.movieapp.presentation.ui.MainScreen
-import com.daniellapaiva.movieapp.ui.theme.MovieAppTheme
+import com.daniellapaiva.movieapp.designsystem.theme.MovieAppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

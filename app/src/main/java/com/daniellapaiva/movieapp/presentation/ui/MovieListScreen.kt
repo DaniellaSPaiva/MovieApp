@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import coil.compose.rememberAsyncImagePainter
 import com.daniellapaiva.movieapp.domain.model.Movie
 import com.daniellapaiva.movieapp.presentation.viewmodel.MovieListViewModel
+import com.daniellapaiva.movieapp.designsystem.components.LoadingIndicator
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -32,14 +33,20 @@ fun MovieListScreen(
     viewModel: MovieListViewModel = koinViewModel(),
     onMovieClick: (Int) -> Unit
 ) {
+
+    val isLoading by viewModel.isLoading.collectAsState()
     val movies by viewModel.popularMovies.collectAsState(initial = emptyList())
 
-    LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        items(movies) { movie ->
-            MovieItem(movie = movie, onClick = { onMovieClick(movie.id) })
+    if (isLoading) {
+        LoadingIndicator()
+    } else {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            items(movies) { movie ->
+                MovieItem(movie = movie, onClick = { onMovieClick(movie.id) })
+            }
         }
     }
 }
