@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MovieApp</string>
+    <string name="nav_graph_invalid_movie_id">Invalid movie ID</string>
 </resources>
