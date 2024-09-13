@@ -91,8 +91,10 @@ dependencies {
 
     // Mockk e outros frameworks de teste
     testImplementation(libs.mockk)
-    androidTestImplementation(libs.mockk.android)
     testImplementation (libs.mockwebserver)
+    testImplementation (libs.koin.test)
+    testImplementation (libs.koin.test.junit4)
+    androidTestImplementation(libs.mockk.android)
 
     // Debugging
     debugImplementation(libs.androidx.ui.tooling)
