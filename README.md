@@ -102,7 +102,7 @@ Contribuições são bem-vindas! Se você encontrar algum bug ou tiver sugestõe
 O projeto inclui testes unitários para componentes-chave, garantindo a funcionalidade adequada e a manutenção do código:
 
 - **Testes de Repositório**: Validam a comunicação correta com a API utilizando o MockWebServer para simular respostas reais da API.
-- **Testes de ViewModel**: Garantem que as ViewModels lidam corretamente com o carregamento de dados de filmes populares e detalhes de filmes, com injeção de dependências - feita via KoinTest.
+- **Testes de ViewModel**: Garantem que as ViewModels lidam corretamente com o carregamento de dados de filmes populares e detalhes de filmes, com injeção de dependências feita via KoinTest.
 - **Testes de Casos de Uso**: Verificam se os casos de uso, como GetPopularMoviesUseCase e GetMovieDetailsUseCase, interagem corretamente com o repositório e retornam os resultados esperados.
   
 Melhorias futuras focarão em expandir os testes de integração para cobrir fluxos completos e garantir que o aplicativo funcione corretamente em diversos cenários.
