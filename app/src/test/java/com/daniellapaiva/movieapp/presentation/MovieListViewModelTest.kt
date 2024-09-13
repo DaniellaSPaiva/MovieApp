@@ -3,6 +3,8 @@ package com.daniellapaiva.movieapp.presentation
 import com.daniellapaiva.movieapp.domain.MovieRepository
 import com.daniellapaiva.movieapp.domain.model.Movie
 import com.daniellapaiva.movieapp.domain.usecase.GetPopularMoviesUseCase
+import com.daniellapaiva.movieapp.domain.util.AppError
+import com.daniellapaiva.movieapp.presentation.common.UIState
 import com.daniellapaiva.movieapp.presentation.viewmodel.MovieListViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -23,9 +25,10 @@ import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class MovieListViewModelTest: KoinTest {
+class MovieListViewModelTest : KoinTest {
 
     private val movieRepository: MovieRepository = mockk()
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase by inject()
@@ -37,18 +40,11 @@ class MovieListViewModelTest: KoinTest {
         Dispatchers.setMain(testDispatcher)
 
         startKoin {
-            modules(
-                module {
-                    single { movieRepository }
-                    single { GetPopularMoviesUseCase(get()) }
-                }
-            )
+            modules(module {
+                single { movieRepository }
+                single { GetPopularMoviesUseCase(get()) }
+            })
         }
-
-        coEvery { movieRepository.getPopularMovies() } returns listOf(
-            Movie(id = 1, title = "Movie 1", overview = "Overview 1", posterPath = "/path1.jpg"),
-            Movie(id = 2, title = "Movie 2", overview = "Overview 2", posterPath = "/path2.jpg")
-        )
 
         movieListViewModel = MovieListViewModel(getPopularMoviesUseCase)
     }
@@ -61,24 +57,62 @@ class MovieListViewModelTest: KoinTest {
 
     @Test
     fun `should update movies state when fetchPopularMovies is called`() = runTest {
+
         val expectedMovies = listOf(
             Movie(id = 1, title = "Movie 1", overview = "Overview 1", posterPath = "/path1.jpg"),
             Movie(id = 2, title = "Movie 2", overview = "Overview 2", posterPath = "/path2.jpg")
         )
+        coEvery { getPopularMoviesUseCase() } returns Result.success(expectedMovies)
 
+        movieListViewModel.fetchPopularMovies()
         advanceUntilIdle()
 
-        assertEquals(expectedMovies, movieListViewModel.popularMovies.first())
+        val state = movieListViewModel.uiState.first()
+        assertTrue(state is UIState.Success)
+        assertEquals(expectedMovies, state.data)
     }
 
     @Test
-    fun `should update movies state with empty list when no popular movies are available`() = runTest {
-        coEvery { movieRepository.getPopularMovies() } returns emptyList()
+    fun `should update movies state with empty list when no popular movies are available`() =
+        runTest {
+            coEvery { getPopularMoviesUseCase() } returns Result.success(emptyList())
 
-        movieListViewModel = MovieListViewModel(getPopularMoviesUseCase)
+            movieListViewModel.fetchPopularMovies()
+            advanceUntilIdle()
 
+            val state = movieListViewModel.uiState.first()
+            assertTrue(state is UIState.Success)
+            assertEquals(emptyList(), state.data)
+        }
+
+    @Test
+    fun `should update error state when fetchPopularMovies fails with NetworkError`() = runTest {
+
+        coEvery { getPopularMoviesUseCase() } returns Result.failure(AppError.NetworkError)
+
+        movieListViewModel.fetchPopularMovies()
         advanceUntilIdle()
 
-        assertEquals(emptyList(), movieListViewModel.popularMovies.first())
+        val state = movieListViewModel.uiState.first()
+        assertTrue(state is UIState.Error)
+        assertTrue((state.error as? Throwable)?.message == "No internet connection")
+    }
+
+    @Test
+    fun `should update error state when fetchPopularMovies fails with UnknownError`() = runTest {
+
+        val errorMessage = "Unexpected error"
+        coEvery { getPopularMoviesUseCase() } returns Result.failure(
+            AppError.UnknownError(
+                errorMessage
+            )
+        )
+
+        movieListViewModel.fetchPopularMovies()
+        advanceUntilIdle()
+
+        val state = movieListViewModel.uiState.first()
+        assertTrue(state is UIState.Error)
+        assertTrue((state.error as? Throwable)?.message == "Unexpected error")
     }
 }
