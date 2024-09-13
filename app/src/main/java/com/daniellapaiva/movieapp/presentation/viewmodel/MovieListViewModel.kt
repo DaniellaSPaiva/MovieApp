@@ -1,6 +1,7 @@
 package com.daniellapaiva.movieapp.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import com.daniellapaiva.movieapp.domain.util.AppError
 import com.daniellapaiva.movieapp.domain.model.Movie
 import com.daniellapaiva.movieapp.domain.usecase.GetPopularMoviesUseCase
 import kotlinx.coroutines.launch
@@ -15,13 +16,12 @@ class MovieListViewModel(
 
     fun fetchPopularMovies() {
         viewModelScope.launch {
-            try {
-                setLoading()
-                val movies = getPopularMoviesUseCase()
-                setSuccess(movies)
-            } catch (e: Exception) {
-                handleError(e)
-            }
+            setLoading()
+            val result = getPopularMoviesUseCase()
+            result.fold(
+                onSuccess = { setSuccess(it) },
+                onFailure = { error -> handleError(error as AppError) }
+            )
         }
     }
 }

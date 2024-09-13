@@ -1,6 +1,7 @@
 package com.daniellapaiva.movieapp.presentation.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import com.daniellapaiva.movieapp.domain.util.AppError
 import com.daniellapaiva.movieapp.domain.model.Movie
 import com.daniellapaiva.movieapp.domain.usecase.GetMovieDetailsUseCase
 import kotlinx.coroutines.launch
@@ -11,13 +12,12 @@ class MovieDetailsViewModel(
 
     fun fetchMovieDetails(movieId: Int) {
         viewModelScope.launch {
-            try {
-                setLoading()
-                val movies = getMovieDetailsUseCase(movieId)
-                setSuccess(movies)
-            } catch (e: Exception) {
-                handleError(e)
-            }
+            setLoading()
+            val result = getMovieDetailsUseCase(movieId)
+            result.fold(
+                onSuccess = { setSuccess(it) },
+                onFailure = { error -> handleError(error as AppError) }
+            )
         }
     }
 }
