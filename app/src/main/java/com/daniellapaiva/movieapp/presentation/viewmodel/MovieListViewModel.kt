@@ -18,7 +18,7 @@ class MovieListViewModel(
         fetchPopularMovies()
     }
 
-    private fun fetchPopularMovies() {
+    fun fetchPopularMovies() {
         viewModelScope.launch {
             setLoading(true)
             val movies = getPopularMoviesUseCase()

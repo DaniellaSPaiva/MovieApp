@@ -83,6 +83,7 @@ dependencies {
 
     // Tests
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -90,6 +91,9 @@ dependencies {
 
     // Mockk e outros frameworks de teste
     testImplementation(libs.mockk)
+    testImplementation (libs.mockwebserver)
+    testImplementation (libs.koin.test)
+    testImplementation (libs.koin.test.junit4)
     androidTestImplementation(libs.mockk.android)
 
     // Debugging

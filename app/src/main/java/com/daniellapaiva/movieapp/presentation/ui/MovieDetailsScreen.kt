@@ -20,14 +20,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.daniellapaiva.movieapp.domain.model.Movie
-import com.daniellapaiva.movieapp.presentation.viewmodel.MovieDetailViewModel
+import com.daniellapaiva.movieapp.presentation.viewmodel.MovieDetailsViewModel
 import com.daniellapaiva.movieapp.designsystem.components.LoadingIndicator
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieDetailsScreen(
     movieId: Int?,
-    viewModel: MovieDetailViewModel = koinViewModel()
+    viewModel: MovieDetailsViewModel = koinViewModel()
 ) {
     movieId?.let {
         LaunchedEffect(movieId) {
