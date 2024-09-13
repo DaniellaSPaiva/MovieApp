@@ -92,6 +92,7 @@ dependencies {
     // Mockk e outros frameworks de teste
     testImplementation(libs.mockk)
     androidTestImplementation(libs.mockk.android)
+    testImplementation (libs.mockwebserver)
 
     // Debugging
     debugImplementation(libs.androidx.ui.tooling)
