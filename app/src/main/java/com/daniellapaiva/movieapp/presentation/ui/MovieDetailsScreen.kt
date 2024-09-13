@@ -1,10 +1,8 @@
 package com.daniellapaiva.movieapp.presentation.ui
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,34 +17,29 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
+import com.daniellapaiva.movieapp.designsystem.components.UIStateHandler
 import com.daniellapaiva.movieapp.domain.model.Movie
 import com.daniellapaiva.movieapp.presentation.viewmodel.MovieDetailsViewModel
-import com.daniellapaiva.movieapp.designsystem.components.LoadingIndicator
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieDetailsScreen(
-    movieId: Int?,
-    viewModel: MovieDetailsViewModel = koinViewModel()
+    viewModel: MovieDetailsViewModel = koinViewModel(),
+    movieId: Int
 ) {
-    movieId?.let {
-        LaunchedEffect(movieId) {
-            viewModel.fetchMovieDetails(movieId)
-        }
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(movieId) {
+        viewModel.fetchMovieDetails(movieId)
     }
 
-    val isLoading by viewModel.isLoading.collectAsState()
-    val movieDetails by viewModel.movieDetails.collectAsState()
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        movieDetails?.let { movie ->
+    UIStateHandler(
+        uiState = uiState,
+        successContent = { movie ->
             MovieDetailsContent(movie = movie)
-        }
-
-        if (isLoading) {
-            LoadingIndicator()
-        }
-    }
+        },
+        onRetry = { viewModel.fetchMovieDetails(movieId) }
+    )
 }
 
 @Composable
