@@ -15,6 +15,7 @@ Veja uma demonstração rápida do MovieApp em ação:
 3. [Configuração do Projeto](#configuração-do-projeto)
 4. [Execução do Projeto](#execução-do-projeto)
 5. [Melhorias Futuras](#melhorias-futuras)
+6. [Testes] (#testes)
 
 ## Funcionalidades
 
@@ -96,6 +97,15 @@ O aplicativo deve ser executado e exibir a lista de filmes populares. Clicando e
   - **Animações Personalizadas**: Adicionar animações ao logo ou outros elementos visuais para criar uma experiência mais envolvente e profissional.
 
 Contribuições são bem-vindas! Se você encontrar algum bug ou tiver sugestões, sinta-se à vontade para abrir uma issue ou enviar um pull request.
+
+## Testes
+O projeto inclui testes unitários para componentes-chave, garantindo a funcionalidade adequada e a manutenção do código:
+
+- **Testes de Repositório**: Validam a comunicação correta com a API utilizando o MockWebServer para simular respostas reais da API.
+- **Testes de ViewModel**: Garantem que as ViewModels lidam corretamente com o carregamento de dados de filmes populares e detalhes de filmes, com injeção de dependências - feita via KoinTest.
+- **Testes de Casos de Uso**: Verificam se os casos de uso, como GetPopularMoviesUseCase e GetMovieDetailsUseCase, interagem corretamente com o repositório e retornam os resultados esperados.
+  
+Melhorias futuras focarão em expandir os testes de integração para cobrir fluxos completos e garantir que o aplicativo funcione corretamente em diversos cenários.
 
 ## Licença
 Este projeto é distribuído sob a licença MIT. Para mais detalhes, consulte o arquivo LICENSE.
