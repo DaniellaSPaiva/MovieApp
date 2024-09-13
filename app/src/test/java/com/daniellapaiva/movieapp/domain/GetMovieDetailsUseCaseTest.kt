@@ -1,6 +1,5 @@
-package com.daniellapaiva.movieapp
+package com.daniellapaiva.movieapp.domain
 
-import com.daniellapaiva.movieapp.domain.MovieRepository
 import com.daniellapaiva.movieapp.domain.model.Movie
 import com.daniellapaiva.movieapp.domain.usecase.GetMovieDetailsUseCase
 import io.mockk.coEvery
