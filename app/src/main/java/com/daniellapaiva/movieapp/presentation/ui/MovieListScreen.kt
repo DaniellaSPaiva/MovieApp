@@ -2,15 +2,17 @@ package com.daniellapaiva.movieapp.presentation.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,34 +20,36 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import coil.compose.rememberAsyncImagePainter
+import com.daniellapaiva.movieapp.designsystem.components.UIStateHandler
 import com.daniellapaiva.movieapp.domain.model.Movie
 import com.daniellapaiva.movieapp.presentation.viewmodel.MovieListViewModel
-import com.daniellapaiva.movieapp.designsystem.components.LoadingIndicator
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MovieListScreen(
     viewModel: MovieListViewModel = koinViewModel(),
+    onNavigateToDetails: (Int) -> Unit
+) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    UIStateHandler(
+        uiState = uiState,
+        successContent = { movies ->
+            MovieList(movies = movies, onMovieClick = onNavigateToDetails)
+        },
+        onRetry = { viewModel.fetchPopularMovies() }
+    )
+}
+
+@Composable
+fun MovieList(
+    movies: List<Movie>,
     onMovieClick: (Int) -> Unit
 ) {
-
-    val isLoading by viewModel.isLoading.collectAsState()
-    val movies by viewModel.popularMovies.collectAsState(initial = emptyList())
-
-    Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn {
-            items(movies) { movie ->
-                MovieItem(movie = movie, onClick = { onMovieClick(movie.id) })
-            }
-        }
-
-        if (isLoading) {
-            LoadingIndicator()
+    LazyColumn {
+        items(movies) { movie ->
+            MovieItem(movie = movie, onClick = { onMovieClick(movie.id) })
         }
     }
 }
